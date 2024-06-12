@@ -39,3 +39,10 @@ yarn-error.*
 
 expo-env.d.ts
 # @end expo-cli
+/.idea/jsLinters/eslint.xml
+/.idea/git_toolbox_prj.xml
+/.idea/ithub-mob.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
