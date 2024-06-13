@@ -23,7 +23,7 @@ export const EditorTextControl = <Fields extends FieldValues = FieldValues>({isR
         {/*//@ts-ignore*/}
         <Controller control={control}  render={({field}) => {
             return (
-                <EditorText {...field} onChange={(html:string) => {
+                <EditorText style={{minHeight:200}} initialContentHTML={field.value} {...field} onChange={(html:string) => {
                     field.onChange(html)
                 }}/>
             )

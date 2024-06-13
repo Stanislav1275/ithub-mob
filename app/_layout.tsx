@@ -54,16 +54,14 @@ function RootLayoutNav() {
         <Providers>
             <Stack initialRouteName='/feed' screenOptions={{
                 headerTitle: () => (
-                    <HStack gap="$4">
+                    <HStack m='$1' gap="$4">
                         <Link href="/feed">
                             Лента
                         </Link>
                         <Link href="teams">
                             Команды
                         </Link>
-                        <Link href="/teams/1">
-                            Команда
-                        </Link>
+
                     </HStack>
                 ),
                 headerLeft: () => (

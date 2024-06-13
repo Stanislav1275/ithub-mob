@@ -11,7 +11,7 @@ type SchemaServer = z.infer<typeof UserRegisterSchema>;
 export const useCurrentUser = (enabled?: boolean | null | undefined) => {
   return useQuery<UserType | null>({
     queryFn: async () => {
-      return UserRepo.getCurUser().catch((v) => null);
+      return await UserRepo.getCurUser().catch((v) => null);
     },
     queryKey: SessionKeys.getCurrentUser(),
     refetchOnMount: true,

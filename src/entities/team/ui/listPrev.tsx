@@ -1,7 +1,9 @@
 import {useQuery} from 'react-query';
 import {$api} from '@/shared/lib/axios/instance';
 import {Link} from 'expo-router';
-import {Avatar, AvatarImage, Button, Card, FlatList, HStack, Text} from "@gluestack-ui/themed";
+import {Avatar, Button, Card, Heading, ScrollView, Text, VStack} from "@gluestack-ui/themed";
+import {Image} from "expo-image";
+import {FlatList} from 'react-native'
 
 type TeamListPreviewItem = {
     id: number;
@@ -16,7 +18,7 @@ export const TeamPreviewFeedItem = ({ team }: { team: TeamListPreviewItem }) => 
         <Link href={`/teams/${id}`}>
             <Card size='md'>
                     <Avatar >
-                        <AvatarImage src={avatar!} />
+                        <Image style={{borderRadius:100,width:36, height:36}} source={{uri:avatar||''}}/>
                     </Avatar>
                     <Text>{name}</Text>
                     <Text >Подписчиков:{folowers_count}</Text>
@@ -34,14 +36,21 @@ export const TeamListPrev = () => {
         isFetched,
     } = useQuery({ queryFn: () => $api.get<{ teams: TeamListPreviewItem[] }>('api/team').then((v) => v.data), queryKey: ['list', 'teams'] });
     return (
-        <HStack>
-            <Text >Команды</Text>
-            <FlatList
-                keyExtractor={(item) => item.id}
-                data={teams} renderItem={({item:team, index}) => (
-                <TeamPreviewFeedItem team={team} key={team.id || index} />
-            )}/>
+        <ScrollView>
 
-        </HStack>
+        <VStack>
+            <Heading >Команды</Heading>
+            <FlatList
+                contentContainerStyle={{ gap: 16 }}
+                columnWrapperStyle={{ gap: 16 }}
+                numColumns={2}
+                keyExtractor={(item) => String(item.id)}
+                data={teams} renderItem={({item:team, index}) => (
+                        <TeamPreviewFeedItem team={team} key={team.id || index} />
+
+            )}/>
+        </VStack>
+        </ScrollView>
+
     );
 };
