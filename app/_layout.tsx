@@ -1,23 +1,25 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import {Navigator, Stack} from 'expo-router';
+import {useFonts} from 'expo-font';
+import {Link, Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import { Text } from 'react-native';
-
-import { useColorScheme, Image } from 'react-native';
-import Screen = Navigator.Screen;
-
+import {useEffect} from 'react';
+import {Providers} from "@/settings/providers";
+import {HStack, Text} from '@gluestack-ui/themed';
+import {useLog} from '@/entities/session/model/hooks';
+import {AuthButton} from "@/features/auth/ui/auth-button";
+import {CurrentUserNav} from "@/entities/user/ui/CurrentUserNav";
+// export const unstable_settings = {
+//     initialRouteName: '(home)',
+// };
 export {
     // Catch any errors thrown by the Layout component.
     ErrorBoundary,
 } from 'expo-router';
 
-// export const unstable_settings = {
-//     // Ensure that reloading on `/modal` keeps a back button present.
-//     initialRouteName: '(tabs)',
-// };
+export const unstable_settings = {
+    // Ensure that reloading on `/modal` keeps a back button present.
+    initialRouteName: 'feed',
+};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -46,14 +48,53 @@ export default function RootLayout() {
     return <RootLayoutNav />;
 }
 
-function RootLayoutNav() {
-    const colorScheme = useColorScheme();
 
+function RootLayoutNav() {
     return (
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack>
-                <Image src='http://www.photohost.ru/pictures/259178.jpg'/>
+        <Providers>
+            <Stack screenOptions={{
+                headerTitle: () => (
+                    <HStack gap="$4">
+                        <Link href="/feed">
+                            Лента
+                        </Link>
+                        <Link href="/teams">
+                            Команды
+                        </Link>
+                    </HStack>
+                ),
+                headerLeft: () => (
+                    <Link href="feed">
+                        <Text>KITE</Text>
+                    </Link>
+                ),
+                headerStyle: {
+                    backgroundColor: 'transparent', // Делаем фон заголовка прозрачным
+                },
+                headerRight: () => {
+                    const { data: logged, isLoading } = useLog();
+                    return !logged && !isLoading ? (
+                        <AuthButton />
+                    ) : isLoading ? (
+                        <Text>Susp</Text>
+                    ) : (
+                        <CurrentUserNav />
+                    );
+                },
+                contentStyle: { backgroundColor: 'transparent' },
+                headerShown: true,
+                headerBackVisible: false,
+            }}>
+                <Stack.Screen
+                    name="feed"
+                />
+                <Stack.Screen
+                    name="teams"
+                />
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen name="signup" options={{ headerShown: false }} />
             </Stack>
-        </ThemeProvider>
+        </Providers>
     );
 }
+
