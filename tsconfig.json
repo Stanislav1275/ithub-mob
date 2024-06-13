@@ -8,7 +8,8 @@
       "@/widgets/*": ["./src/widgets/*"],
       "@/features/*": ["./src/features/*"],
       "@/entities/*": ["./src/entities/*"],
-      "@/settings/*": ["./src/settings/*"]
+      "@/settings/*": ["./src/settings/*"],
+      "@/pages/*": ["./src/pages/*"]
     }
   },
   "include": [

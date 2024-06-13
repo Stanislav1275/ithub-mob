@@ -1,31 +1,50 @@
 import {IAvatarProps} from '@gluestack-ui/avatar/lib/typescript/types';
-import {Avatar, Link,} from '@gluestack-ui/themed';
+import {Avatar} from '@gluestack-ui/themed';
 import {useCurrentUser} from '../../session/model/queries';
 import {Image} from 'expo-image';
 import {StyleSheet} from 'react-native';
+import {Link} from "expo-router";
+import {useState} from "react";
 
 type UserAvatarPropsType = IAvatarProps;
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 export const ProfileAvatar = (
-  props: UserAvatarPropsType & { name?: string; avatar: string; href?: string }
+  props: UserAvatarPropsType & { name?: string; avatar: string; href?: string, size?:number }
 ) => {
-  const { name = '??', avatar, href } = props;
+  const { name = '??', avatar, href, size='sm' } = props;
   const d = name;
+  const [f, setF] = useState(false);
+  if(href) return (
+      <Link  href={href}>
+        <Avatar  size={size} borderRadius="$full" {...props}>
+          <Image
+              style={styles.imageLG}
+              placeholder={blurhash}
+              alt={d}
+              source={
+                {uri:avatar}
+              }
+          />
+        </Avatar>
+      </Link>
+  )
   return (
-    <Link isDisabled={!href} href={href}>
 
-      <Avatar  size="sm" borderRadius="$full" {...props}>
+      <Avatar  size={size} borderRadius="$full" {...props}>
+
         <Image
-            style={[styles.image]}
-            alt="d"
+            style={styles.image}
+            alt={d}
             source={
-              avatar
+                {uri:avatar}
+
             }
             transition={300}
         />
       </Avatar>
-    </Link>
+
+
   );
 };
 export const CurrentUserAvatar = (
@@ -52,7 +71,17 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius:100,
-    width: 40,
-    height: 40,
+    width: 36,
+    height: 36,
   },
+    imageMD: {
+        borderRadius:100,
+        width: 60,
+        height: 60,
+    },
+    imageLG: {
+        borderRadius:100,
+        width: 80,
+        height: 80,
+    },
 });

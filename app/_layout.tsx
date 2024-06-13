@@ -18,7 +18,7 @@ export {
 
 export const unstable_settings = {
     // Ensure that reloading on `/modal` keeps a back button present.
-    initialRouteName: 'feed',
+    initialRouteName: '/feed',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -52,19 +52,22 @@ export default function RootLayout() {
 function RootLayoutNav() {
     return (
         <Providers>
-            <Stack screenOptions={{
+            <Stack initialRouteName='/feed' screenOptions={{
                 headerTitle: () => (
                     <HStack gap="$4">
                         <Link href="/feed">
                             Лента
                         </Link>
-                        <Link href="/teams">
+                        <Link href="teams">
                             Команды
+                        </Link>
+                        <Link href="/teams/1">
+                            Команда
                         </Link>
                     </HStack>
                 ),
                 headerLeft: () => (
-                    <Link href="feed">
+                    <Link href="/feed">
                         <Text>KITE</Text>
                     </Link>
                 ),
@@ -85,14 +88,19 @@ function RootLayoutNav() {
                 headerShown: true,
                 headerBackVisible: false,
             }}>
-                <Stack.Screen
-                    name="feed"
-                />
-                <Stack.Screen
-                    name="teams"
-                />
-                <Stack.Screen name="login" options={{ headerShown: false }} />
-                <Stack.Screen name="signup" options={{ headerShown: false }} />
+                    <Stack.Screen
+                        name="feed"
+                    />
+                    <Stack.Screen
+                        name="teams"
+                    />
+                    <Stack.Screen
+                        name="teams/[id]"
+                    />
+                    <Stack.Screen
+                        name="user/[id]"
+                    />
+
             </Stack>
         </Providers>
     );

@@ -1,5 +1,6 @@
-import {Badge, BadgeText, Link} from '@gluestack-ui/themed';
-import {TeamPartialAsUser} from '@/shared/models/team.model';
+import {Badge, BadgeText} from '@gluestack-ui/themed';
+import {TeamPartialAsUser} from '@/shared/api/models/team';
+import {Link} from "expo-router";
 
 export const TeamPreviewAsLink = (props: TeamPartialAsUser) => {
   const { id, name, role } = props;
