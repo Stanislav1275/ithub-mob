@@ -54,7 +54,7 @@ export const CurrentUserAvatar = (
   const { link, ...other } = props;
   return (
     <ProfileAvatar
-      href={link && `/user/${user.id}`}
+      href={link && `/user/${user?.id}`}
       //@ts-ignore
       avatar={user?.avatar!}
       name={`${user?.firstname} ${user?.lastname}`}

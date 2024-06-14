@@ -6,7 +6,8 @@ export const useUserByIdQuery = (id: number | undefined) => {
   return useQuery({
     refetchOnMount: true,
     refetchIntervalInBackground: true,
-    enabled: !!id || id === 0,
+    cacheTime:0,
+    // enabled: !!id || id === 0,
     queryKey: UsersKeys.getUserById(id),
     staleTime: 0,
     queryFn: async () => {

@@ -74,6 +74,7 @@ function RootLayoutNav() {
                 },
                 headerRight: () => {
                     const { data: logged, isLoading } = useLog();
+
                     return !logged && !isLoading ? (
                         <AuthButton />
                     ) : isLoading ? (

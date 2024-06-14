@@ -23,33 +23,51 @@ import {Dimensions} from "react-native";
 export const ProjectCard = ({ project }: { project: ProjectAsTeam }) => {
     const { title, created_at, id, likes_count = 0, folowers_count = 0, patch_count, description } = project;
     const date = new Date(created_at).toLocaleDateString();
+    let deviceWidth = Dimensions.get('window').width
+
     return (
-        <Link href={`/project/${id}`}>
-            <Card>
-                <Heading>
-                    <Text>{title}</Text>
+            <Card $w={deviceWidth} $mt='$4'  style={{
+                marginTop: 10,
+                marginBottom: 10,
+                borderWidth: 1,
+                borderStyle: 'solid',
+                borderColor: 'gray',
+                borderRadius: 16
+            }}>
+                <HStack justifyContent='space-between' w='full'>
+                    <Heading>{title}</Heading>
                     <Text style={{ margin: 0 }} >
                         {date}
                     </Text>
-                </Heading>
-                {description && (
-                    <RenderHTML  source={{html:description}} />
-                )}
+                </HStack>
+
+                {description && <VStack px='$2' style={{
+                    marginTop: 10,
+                    borderWidth: 1,
+                    borderStyle: 'solid',
+                    borderColor: 'gray',
+                    borderRadius: 16
+                }}>
+                    <Heading>
+                        Описание
+                    </Heading>
+                    <RenderHTML source={{html: description || '<></>'}}/>
+
+                </VStack>}
                 <View>
-                    <span className="flex gap-3">
-                        <span className="flex items-center gap-1">
+                    <HStack gap='$2'>
+                        <HStack gap='$1' >
                             <Text style={{ margin: 0, marginTop: 2 }}>{likes_count}</Text>
-                        </span>
-                        <span className="flex items-center gap-1">
+                        </HStack>
+                        <HStack gap='$1'>
                             <Text style={{ margin: 0, marginTop: 2, marginLeft: 2 }}>{folowers_count}</Text>
-                        </span>
-                    </span>
-                    <span className="flex items-center">
-                        <Text  style={{ margin: 0, marginTop: 2, marginLeft: 2 }}>{`v${patch_count}`}</Text>
-                    </span>
+                        </HStack>
+                    </HStack>
+                    <HStack gap='$1'>
+                    <Text  style={{ margin: 0, marginTop: 2, marginLeft: 2 }}>{`v${patch_count}`}</Text>
+                    </HStack>
                 </View>
             </Card>
-        </Link>
     );
 };
 export const ProjectCardDetailPreview = ({ project }: { project: Project }) => {

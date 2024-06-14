@@ -6,7 +6,7 @@ export const TeamPreviewAsLink = (props: TeamPartialAsUser) => {
   const { id, name, role } = props;
   return (
     <Link href={`/teams/${id}`} key={id}>
-      <Badge borderRadius="$md" bg={role === 'Создатель' && '$orange400'}>
+      <Badge  borderRadius="$md" bg={role === 'Создатель' ? '$orange400':'$blue100'}>
         <BadgeText>{name}</BadgeText>
       </Badge>
     </Link>

@@ -1,5 +1,5 @@
-import { TagsSchema } from './tags.model';
-import { z } from 'zod';
+import {TagsSchema} from './tags.model';
+import {z} from 'zod';
 
 export type ProjectTeam = {
   id: number;
@@ -19,10 +19,10 @@ export type Project = {
   is_folow: boolean;
   html_info?: string | null;
   is_liked: boolean;
-  tags: Array<TagsSchema>;
+  tags: TagsSchema[];
 };
 export type ProjectListSchema = {
-  projects: Array<Project>;
+  projects: Project[];
 };
 export const CreateProjectZodChema = z.object({
   title: z
@@ -38,10 +38,5 @@ export const CreateProjectZodChema = z.object({
     .min(20, { message: '20 сиволов минимум' })
     .max(4000)
     .optional(),
-  stack: z
-    .string()
-    .min(2, { message: 'обязательно' })
-    .max(40, { message: 'уложитеь в 40 символов' }),
-  tags: z.any(),
 });
 export type CreateProjectChemaServer = z.infer<typeof CreateProjectZodChema>;

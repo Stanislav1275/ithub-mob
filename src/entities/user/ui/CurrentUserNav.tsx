@@ -83,9 +83,9 @@ export function CurrentUserNav() {
                       data={finalTeams}
                       renderItem={({ item }: { item: TeamPartialAsUser }) => (
                           <TeamPreviewAsLink
-                              id={item.id}
-                              role={item.role}
-                              name={item.name}
+                              id={item?.id}
+                              role={item?.role}
+                              name={item?.name}
                           />
                       )}
                   />

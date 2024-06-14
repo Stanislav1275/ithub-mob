@@ -22,12 +22,12 @@ import React from "react";
 import {AlertTriangle} from "lucide-react-native";
 import {EditorTextControl} from "@/shared/lib/ui/rich-editor/editor";
 
-export const CreateResumeForm = () => {
+export const CreateResumeForm = (id:number) => {
     const {handleSubmit, control, reset, formState: {errors, isSubmitting}} = useForm<CreatePostResumeSchema>({
         resolver: zodResolver(CreateResumeZod),
         defaultValues: {title: '', html_info: ''},
     });
-    const {mutateAsync, isLoading} = useCreateResume();
+    const {mutateAsync, isLoading} = useCreateResume(id);
     const toast = useToast();
     const onSubmit: SubmitHandler<CreatePostResumeSchema> = async (data) => {
         try {

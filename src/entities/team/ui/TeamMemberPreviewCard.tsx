@@ -8,22 +8,25 @@
 // import { useTeamCurrentQuery } from '@/entities/team/model/queries';
 // import { ReactNode } from 'react';
 //
-// export const TeamMember = ({ member }: { member: MemberTeam }) => {
-//     return (
-//         <Link href={`/user/${member.id}`}>
-//             <Card className="w-[145px] max-w-[145px] flex items-center flex-col px-4 py-2 hover-opacity-[0.8] hover:text-accent">
-//                 <CardContent className="flex flex-col items-center p-0">
-//                     <Avatar className="hover:opacity-[0.7] rounded-lg w-[80px] h-[80px]">
-//                         <AvatarImage className="rounded-lg" src={member.avatar!} />
-//                         <AvatarFallback>{member.username.slice(0, 2)}</AvatarFallback>
-//                     </Avatar>
-//                     <P className="line-clamp-1 overflow-clip hover:text-accent">{member.username}</P>
-//                     <P className="text-muted-foreground">{member.role || 'Участник'}</P>
-//                 </CardContent>
-//             </Card>
-//         </Link>
-//     );
-// };
+import {MemberTeam} from "@/shared/api/models/team";
+import {Link} from "expo-router";
+import {Card, Center, Text} from "@gluestack-ui/themed";
+import {ProfileAvatar} from "@/entities/user/ui/UserAvatar";
+
+export const TeamMember = ({ member }: { member: MemberTeam }) => {
+    return (
+        <Link style={{margin:10}} href={`/user/${member.id}`}>
+            <Card >
+                <Center >
+                    <ProfileAvatar avatar={member?.avatar||''}/>
+
+                    <Text size='md'>{member?.username}</Text>
+                    <Text size='sm' >{member.role || 'Участник'}</Text>
+                </Center>
+            </Card>
+        </Link>
+    );
+};
 // export const MemberAsTeamPartialList = ({ className, actions }: { className?: string; actions?: ReactNode }) => {
 //     const { data: team, isLoading } = useTeamCurrentQuery();
 //     const { members = [] } = team ?? {};

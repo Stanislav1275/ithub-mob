@@ -31,7 +31,7 @@ import {CreateResumeForm} from "@/features/manage-resume/ui/create-resume-form";
 import {useState} from "react";
 import {useCurrentUser} from "@/entities/session/model/queries";
 import {UpdateUserInfoForm} from "@/features/account/update-user-info-form";
-import {TeamPreviewFeedItem} from "@/entities/team/ui/listPrev";
+import {TeamPreviewAsLink} from "@/entities/team/ui/TeamListPreview";
 
 export default function UserDetail() {
     const id = Number(useLocalSearchParams<{ id: string }>().id)
@@ -39,6 +39,7 @@ export default function UserDetail() {
     let deviceWidth = Dimensions.get('window').width
     const {
         data: {
+            id:userId,
             username = '',
             avatar = '',
             teams = [],
@@ -48,21 +49,22 @@ export default function UserDetail() {
             link,
             telegram = '',
             email
-        } = {}
+        } = {}, refetch
     } = useUserByIdQuery(parsedId);
     const {data: {resumes = []} = {}} = useResumeListByUserQuery()
-    const {data: curUser, isLoading} = useCurrentUser();
+    const {data: curUser, isLoading, isFetching} = useCurrentUser(true);
     const isOwner = curUser && curUser.id === parsedId;
     const [settings, setIsSettings] = useState(false);
     const toggleSettings = (against?:boolean) => {
         if (!isOwner) return;
-
         setIsSettings(v=>against!=undefined?against: !v)
+        refetch()
     }
     if(settings) return <UpdateUserInfoForm onS={() => {
         toggleSettings()
     }}/>
     return <ScrollView gap='$4' py='$2' px='$4' space='lg' style={{flex: 1, gap: 4}}>
+        <VStack gap='$4' py='$2'  pb='$8' space='lg' style={{flex: 1, gap: 4}}>
         <HStack gap='$4' space='md'>
             <ProfileAvatar size='lg' avatar={avatar}/>
             <VStack>
@@ -76,9 +78,11 @@ export default function UserDetail() {
 
 
             </VStack>
-            <Button style={{backgroundColor: settings?'#1ec2ff':'#d3d3d3', borderRadius:100, width:30, height:30}} onPress={()=>toggleSettings()}>
+            {isOwner && <Button
+                style={{backgroundColor: settings ? '#1ec2ff' : '#d3d3d3', borderRadius: 100, width: 30, height: 30}}
+                onPress={() => toggleSettings()}>
                 <Icon as={Settings2Icon}/>
-            </Button>
+            </Button>}
         </HStack>
         <VStack>
             <Heading>
@@ -107,7 +111,7 @@ export default function UserDetail() {
             <RenderHTML source={{html: bio_info || '<></>'}}/>
         </Box>
         <VStack style={{borderWidth: 1, borderStyle: 'solid', borderColor: 'gray', borderRadius: 16}}>
-            <VStack>
+            {isOwner && <VStack>
                 <Heading m='$2'>
 
                     Все резюме
@@ -141,13 +145,13 @@ export default function UserDetail() {
                             </AccordionTrigger>
                         </AccordionHeader>
                         <AccordionContent>
-                            <CreateResumeForm/>
+                            <CreateResumeForm id={userId}/>
                         </AccordionContent>
                     </AccordionItem>
 
                 </Accordion>
 
-            </VStack>
+            </VStack>}
             <Accordion
                 $bg={null}
                 width="100%"
@@ -189,16 +193,20 @@ export default function UserDetail() {
                     </AccordionItem>
                 ))}
             </Accordion>
+
+
+        </VStack>
+        <VStack  style={{padding:8,borderWidth: 1, borderStyle: 'solid', borderColor: 'gray', borderRadius: 16}}>
+
+        <Heading>Команды</Heading>
             <FlatList
-                contentContainerStyle={{ gap: 16 }}
-                columnWrapperStyle={{ gap: 16 }}
-                numColumns={2}
+                horisontal
                 keyExtractor={(item) => String(item.id)}
                 data={teams} renderItem={({item:team, index}) => (
-                <TeamPreviewFeedItem team={team} key={team.id || index} />
+                <TeamPreviewAsLink {...team} key={team.id || index} />
 
             )}/>
         </VStack>
-
+        </VStack>
     </ScrollView>
 }
